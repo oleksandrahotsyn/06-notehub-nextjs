@@ -1,5 +1,5 @@
 import css from "./Footer.module.css";
-function Footer() {
+const Footer = () => {
   return (
     <footer className={css.footer}>
       <div className={css.content}>
@@ -14,5 +14,5 @@ function Footer() {
       </div>
     </footer>
   );
-}
+};
 export default Footer;
