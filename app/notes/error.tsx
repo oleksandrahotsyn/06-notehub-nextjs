@@ -1,18 +1,21 @@
 "use client";
 
 type Props = {
-  error: Error;
+  error: Error & { digest?: string };
   reset: () => void;
 };
 
-const Error = ({ error, reset }: Props) => {
+export default function ErrorMessage({ error, reset }: Props) {
   return (
-    <div>
-      <h2>Помилка при завантаженні</h2>
-      <p>{error.message}</p>
-      <button onClick={reset}>Спробувати знову</button>
+    <div role="alert">
+      <p>Could not fetch the list of notes.</p>
+
+      {/* Опційно: показати технічну помилку */}
+      <pre style={{ whiteSpace: "pre-wrap" }}>{error.message}</pre>
+
+      <button type="button" onClick={reset}>
+        Try again
+      </button>
     </div>
   );
-};
-
-export default Error;
+}

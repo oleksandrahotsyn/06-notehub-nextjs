@@ -1,0 +1,36 @@
+.loader {
+  width: 100%;
+  margin: 16px 0;
+  padding: 12px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.loader::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+  border: 2px solid #b6d4fe; /* light blue */
+  border-top-color: #0d6efd; /* primary */
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
