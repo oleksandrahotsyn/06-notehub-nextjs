@@ -22,15 +22,32 @@
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
   font-size: 14px;
+  font-weight: 500;
+
   color: #2563eb;
-  text-decoration: none;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
   border-radius: 6px;
+
+  text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .link:hover {
-  text-decoration: underline;
+  background-color: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.link:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
 
 .delete {
@@ -46,4 +63,25 @@
 
 .delete:hover {
   background-color: #b91c1c;
+}
+.tag {
+  display: inline-block;
+  margin-top: 8px;
+
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  color: #2563eb;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+
+  width: fit-content;
+  max-width: 140px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
