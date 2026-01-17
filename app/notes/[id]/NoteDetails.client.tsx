@@ -6,14 +6,14 @@ import { getSingleNote } from "@/lib/api";
 
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
-
+  const noteId = Number(id);
   const {
     data: note,
     isLoading,
     error,
   } = useQuery({
     queryKey: ["note", id],
-    queryFn: () => getSingleNote(id),
+    queryFn: () => getSingleNote(noteId),
     refetchOnMount: false,
   });
 
@@ -21,15 +21,16 @@ const NoteDetailsClient = () => {
 
   if (error || !note) return <p>Some error..</p>;
 
-  const formattedDate = note.updatedAt
-    ? `Updated at: ${note.updatedAt}`
-    : `Created at: ${note.createdAt}`;
-
   return (
     <div>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
-      <p>{formattedDate}</p>
+      <div>
+        <div>
+          <h2>{note.title}</h2>
+          <button>Edit note</button>
+        </div>
+        <p>{note.content}</p>
+        <p>{note.createdAt}</p>
+      </div>
     </div>
   );
 };

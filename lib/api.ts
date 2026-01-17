@@ -64,3 +64,7 @@ export async function getSingleNote(noteId: string): Promise<Note> {
   const { data } = await api.get<Note>(`/notes/${noteId}`);
   return data;
 }
+export const fetchNoteById = async (id: number): Promise<Note> => {
+  const res = await noteServiceClient.get<Note>(`/${id}`);
+  return res.data;
+};
