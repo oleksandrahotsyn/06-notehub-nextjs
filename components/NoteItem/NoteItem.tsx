@@ -1,16 +1,32 @@
-import { Note } from "@/lib/api";
+// components / NoteItem / NoteItem.tsx
 import Link from "next/link";
+import type { Note } from "@/types/note";
+import css from "./NoteItem.module.css";
 
-type Props = {
-  item: Note;
+type NoteItemProps = {
+  note: Note;
+  onDelete: (id: string) => void;
 };
 
-const NoteItem = ({ item }: Props) => {
+export default function NoteItem({ note, onDelete }: NoteItemProps) {
   return (
-    <li>
-      <Link href={`/notes/${item.id}`}>{item.title}</Link>
+    <li className={css.item}>
+      <h3 className={css.title}>{note.title}</h3>
+
+      <div className={css.actions}>
+        {/* View details — ОБОВʼЯЗКОВО перед Delete */}
+        <Link href={`/notes/${note.id}`} className={css.link}>
+          View details
+        </Link>
+
+        <button
+          type="button"
+          onClick={() => onDelete(note.id)}
+          className={css.delete}
+        >
+          Delete
+        </button>
+      </div>
     </li>
   );
-};
-
-export default NoteItem;
+}

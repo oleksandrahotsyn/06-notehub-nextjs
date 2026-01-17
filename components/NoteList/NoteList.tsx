@@ -1,3 +1,5 @@
+// components / NoteList / NoteList.tsx;
+
 import { Note } from "@/types/note";
 import NoteItem from "../NoteItem/NoteItem";
 
