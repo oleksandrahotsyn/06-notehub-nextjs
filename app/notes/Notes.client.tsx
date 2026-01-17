@@ -75,7 +75,11 @@ export default function NotesClient({
       <div className={css.toolbar}>
         <SearchBox value={search} onChange={setSearch} />
 
-        <button type="button" onClick={() => setIsCreating(true)}>
+        <button
+          className={css.button}
+          type="button"
+          onClick={() => setIsCreating(true)}
+        >
           Create note
         </button>
 
