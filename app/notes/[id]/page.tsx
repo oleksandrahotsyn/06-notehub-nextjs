@@ -1,23 +1,21 @@
-// app / notes / [id] / page.tsx;
-
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
+
 import { fetchNoteById } from "@/lib/api";
 import NoteDetailsClient from "./NoteDetails.client";
 
-type NoteDetailsPageProps = {
-  params: {
-    id: string;
-  };
+type PageProps = {
+  params: { id: string };
 };
 
-export default async function NoteDetailsPage({
-  params,
-}: NoteDetailsPageProps) {
-  const { id } = params;
+export default async function NoteDetailsPage({ params }: PageProps) {
+  const id = params.id;
+
+  if (!id) notFound();
 
   const queryClient = new QueryClient();
 

@@ -1,20 +1,18 @@
-// components / NoteList / NoteList.tsx;
-
-import { Note } from "@/types/note";
+import type { Note } from "@/types/note";
 import NoteItem from "../NoteItem/NoteItem";
+import css from "./NoteList.module.css";
 
-type Props = {
+type NoteListProps = {
   notes: Note[];
+  onDelete: (id: string) => void;
 };
 
-const NoteList = ({ notes }: Props) => {
+export default function NoteList({ notes, onDelete }: NoteListProps) {
   return (
-    <ul>
+    <ul className={css.list}>
       {notes.map((note) => (
-        <NoteItem key={note.id} item={note} />
+        <NoteItem key={note.id} note={note} onDelete={onDelete} />
       ))}
     </ul>
   );
-};
-
-export default NoteList;
+}
