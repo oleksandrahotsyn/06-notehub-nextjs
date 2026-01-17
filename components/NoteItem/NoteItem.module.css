@@ -30,8 +30,8 @@
   font-size: 14px;
   font-weight: 500;
 
-  color: #2563eb;
-  background-color: #eff6ff;
+  color: #eff6ff;
+  background-color: #2563eb;
   border: 1px solid #bfdbfe;
   border-radius: 6px;
 
@@ -43,6 +43,7 @@
 .link:hover {
   background-color: #dbeafe;
   border-color: #93c5fd;
+  color: #2563eb;
 }
 
 .link:focus-visible {
