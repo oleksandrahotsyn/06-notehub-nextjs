@@ -13,6 +13,7 @@ export default function NoteItem({ note, onDelete }: NoteItemProps) {
       <h3 className={css.title}>{note.title}</h3>
 
       <div className={css.actions}>
+        <p className={css.tag}>{note.tag}</p>
         <Link href={`/notes/${note.id}`} className={css.link}>
           View details
         </Link>

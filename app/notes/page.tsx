@@ -1,3 +1,4 @@
+//app / notes / page.tsx
 import css from "@/app/notes/NotesPage.module.css";
 
 import {
@@ -12,15 +13,17 @@ import NotesClient from "./Notes.client";
 const PER_PAGE = 12;
 
 type NotesPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     page?: string;
     search?: string;
-  };
+  }>;
 };
 
 export default async function NotesPage({ searchParams }: NotesPageProps) {
-  const page = Number(searchParams?.page ?? "1") || 1;
-  const search = (searchParams?.search ?? "").trim();
+  const params = (await searchParams) ?? {};
+
+  const page = Number(params.page ?? "1") || 1;
+  const search = (params.search ?? "").trim();
 
   const queryClient = new QueryClient();
 
@@ -31,7 +34,8 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
 
   return (
     <div className={css.app}>
-      <div className={css.toolbar}> </div>
+      <div className={css.toolbar}></div>
+
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotesClient
           initialPage={page}

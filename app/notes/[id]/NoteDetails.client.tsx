@@ -29,11 +29,7 @@ export default function NoteDetailsClient() {
     return <p>Something went wrong.</p>;
   }
 
-  const createdDate =
-    (note as any).createdAt ??
-    (note as any).created_at ??
-    (note as any).created ??
-    "";
+  const createdDate = note.createdAt ?? note.created_at ?? note.created ?? "";
 
   return (
     <div className={css.container}>

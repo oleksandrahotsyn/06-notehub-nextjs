@@ -96,10 +96,16 @@ export async function fetchNoteById(id: string): Promise<Note> {
   const { data } = await api.get(`/notes/${id}`);
   const note: Note | undefined = data?.note ?? data;
 
-  if (!note || typeof note !== "object") {
+  if (
+    !note ||
+    typeof note !== "object" ||
+    !("id" in note) ||
+    !("title" in note) ||
+    !("content" in note) ||
+    !("tag" in note)
+  ) {
     throw new Error("Note not found");
   }
-
   return note as Note;
 }
 
