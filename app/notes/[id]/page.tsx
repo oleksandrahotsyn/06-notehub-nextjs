@@ -3,19 +3,16 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { notFound } from "next/navigation";
 
 import { fetchNoteById } from "@/lib/api";
-import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
+import NoteDetailsClient from "./NoteDetails.client";
 
 type PageProps = {
   params: { id: string };
 };
 
 export default async function NoteDetailsPage({ params }: PageProps) {
-  const id = params.id;
-
-  if (!id) notFound();
+  const { id } = params;
 
   const queryClient = new QueryClient();
 
