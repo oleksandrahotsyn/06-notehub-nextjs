@@ -8,11 +8,11 @@
   justify-content: center;
   gap: 10px;
 
-  background-color: #f8d7da; /* bootstrap danger bg */
+  background-color: #f8d7da;
   border: 1px solid #f5c2c7;
   border-radius: 8px;
 
-  color: #842029; /* bootstrap danger text */
+  color: #842029;
   font-size: 14px;
   line-height: 1.4;
 }

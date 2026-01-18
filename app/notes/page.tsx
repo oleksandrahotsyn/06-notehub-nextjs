@@ -1,4 +1,3 @@
-//app / notes / page.tsx
 import css from "@/app/notes/NotesPage.module.css";
 
 import {
