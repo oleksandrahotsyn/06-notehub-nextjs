@@ -30,7 +30,7 @@ export default function NoteDetailsClient() {
     return <p>Something went wrong.</p>;
   }
 
-  const createdDate = note.createdAt ?? note.created_at ?? note.created ?? "";
+  const createdDate = new Date(note.createdAt).toLocaleString();
 
   return (
     <div className={css.container}>
