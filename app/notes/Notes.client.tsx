@@ -1,21 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 
-import { deleteNote, fetchNotes } from "@/lib/api";
-import type { NotesResponse } from "@/types/note";
+import { fetchNotes } from "@/lib/api";
+import type { NotesResponse } from "@/lib/api";
 import css from "@/app/notes/NotesPage.module.css";
+
 import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteList from "@/components/NoteList/NoteList";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import Modal from "@/components/Modal/Modal";
+import Pagination from "@/components/Pagination/Pagination";
 
 type NotesClientProps = {
   initialPage: number;
@@ -28,8 +25,6 @@ export default function NotesClient({
   initialSearch,
   perPage,
 }: NotesClientProps) {
-  const queryClient = useQueryClient();
-
   const [page, setPage] = useState<number>(initialPage);
   const [search, setSearch] = useState<string>(initialSearch);
   const [isCreating, setIsCreating] = useState(false);
@@ -55,12 +50,6 @@ export default function NotesClient({
     queryFn: () => fetchNotes({ page, perPage, search: debouncedSearch }),
     placeholderData: keepPreviousData,
   });
-  const { mutate: handleDelete, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
 
   if (isLoading) {
     return <p>Loading, please wait...</p>;
@@ -73,8 +62,12 @@ export default function NotesClient({
   return (
     <>
       <div className={css.toolbar}>
-        <SearchBox value={search} onChange={setSearch} />
-
+        <SearchBox onChange={setSearch} />
+        <Pagination
+          pageCount={data.totalPages}
+          currentPage={page}
+          onPageChange={setPage}
+        />
         <button
           className={css.button}
           type="button"
@@ -90,8 +83,7 @@ export default function NotesClient({
         )}
       </div>
 
-      <NoteList notes={data.notes} onDelete={handleDelete} />
-      {isDeleting ? <p>Loading...</p> : null}
+      <NoteList notes={data.notes} />
     </>
   );
 }
