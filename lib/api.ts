@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note, NotesResponse, NoteTag } from "@/types/note";
+import type { Note, NoteTag } from "@/types/note";
 
 const BASE_URL = "https://notehub-public.goit.study/api";
 
@@ -23,57 +23,18 @@ export type FetchNotesParams = {
   perPage: number;
   search?: string;
 };
+export interface NotesResponse {
+  notes: Note[];
+  totalPages: number;
+  page?: number;
+  perPage?: number;
+  totalItems?: number;
+}
 
-type NotesApiRaw =
-  | {
-      notes: Note[];
-      totalPages: number;
-      page?: number;
-      perPage?: number;
-      totalItems?: number;
-    }
-  | any;
+type NoteApiResponse = { note: Note };
 
-function normalizeNotesResponse(raw: NotesApiRaw): NotesResponse {
-  const notes: Note[] = Array.isArray(raw?.notes)
-    ? raw.notes
-    : Array.isArray(raw?.items)
-    ? raw.items
-    : Array.isArray(raw?.data)
-    ? raw.data
-    : [];
-
-  const totalPages: number =
-    typeof raw?.totalPages === "number"
-      ? raw.totalPages
-      : typeof raw?.pages === "number"
-      ? raw.pages
-      : typeof raw?.meta?.totalPages === "number"
-      ? raw.meta.totalPages
-      : 0;
-
-  const page =
-    typeof raw?.page === "number"
-      ? raw.page
-      : typeof raw?.meta?.page === "number"
-      ? raw.meta.page
-      : undefined;
-
-  const perPage =
-    typeof raw?.perPage === "number"
-      ? raw.perPage
-      : typeof raw?.meta?.perPage === "number"
-      ? raw.meta.perPage
-      : undefined;
-
-  const totalItems =
-    typeof raw?.totalItems === "number"
-      ? raw.totalItems
-      : typeof raw?.meta?.totalItems === "number"
-      ? raw.meta.totalItems
-      : undefined;
-
-  return { notes, totalPages, page, perPage, totalItems };
+function unwrapNote(data: Note | NoteApiResponse): Note {
+  return "note" in data ? data.note : data;
 }
 
 export async function fetchNotes(
@@ -81,7 +42,7 @@ export async function fetchNotes(
 ): Promise<NotesResponse> {
   const { page, perPage, search } = params;
 
-  const { data } = await api.get("/notes", {
+  const { data } = await api.get<NotesResponse>("/notes", {
     params: {
       page,
       perPage,
@@ -89,24 +50,12 @@ export async function fetchNotes(
     },
   });
 
-  return normalizeNotesResponse(data);
+  return data;
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {
-  const { data } = await api.get(`/notes/${id}`);
-  const note: Note | undefined = data?.note ?? data;
-
-  if (
-    !note ||
-    typeof note !== "object" ||
-    !("id" in note) ||
-    !("title" in note) ||
-    !("content" in note) ||
-    !("tag" in note)
-  ) {
-    throw new Error("Note not found");
-  }
-  return note as Note;
+  const { data } = await api.get<Note | NoteApiResponse>(`/notes/${id}`);
+  return unwrapNote(data);
 }
 
 export type CreateNotePayload = {
@@ -116,10 +65,11 @@ export type CreateNotePayload = {
 };
 
 export async function createNote(payload: CreateNotePayload): Promise<Note> {
-  const { data } = await api.post("/notes", payload);
-  return (data?.note ?? data) as Note;
+  const { data } = await api.post<Note | NoteApiResponse>("/notes", payload);
+  return unwrapNote(data);
 }
 
-export async function deleteNote(id: string): Promise<void> {
-  await api.delete(`/notes/${id}`);
+export async function deleteNote(id: string): Promise<Note> {
+  const { data } = await api.delete<Note | NoteApiResponse>(`/notes/${id}`);
+  return unwrapNote(data);
 }
